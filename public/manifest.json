@@ -16,7 +16,7 @@
     "default_title": "Willhaben Immo-Karte",
     "default_popup": "popup.html"
   },
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "tabs", "scripting"],
   "content_scripts": [
     {
       "matches": ["https://www.willhaben.at/iad/immobilien/*"],

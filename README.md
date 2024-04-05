@@ -7,7 +7,7 @@ Diese Chrome-Erweiterung erweitert die Willhaben-Immobiliensuche mit der Möglic
 
 Die Erweiterung muss manuell installiert werden:
 
-1. Lade das [Release](https://github.com/Merlinux334/willhaben-chrome-extension/releases/download/0.2/Willhaben-ImmoMap.zip) herunter und entpacke es auf dem lokalen System.
+1. Lade das [Release](https://github.com/Merlinux334/willhaben-chrome-extension/releases/download/0.3/Willhaben-ImmoMap.zip) herunter und entpacke es auf dem lokalen System.
 2. Öffne Chrome und lade `chrome://extensions`.
 3. Aktivieren des Entwicklermodus in der oberen rechten Ecke.
 4. Klicke auf "Load unpacked" und navigieren zu dem Ordner, in dem das Repository entpackt wurde.

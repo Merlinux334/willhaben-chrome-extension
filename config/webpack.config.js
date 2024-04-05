@@ -3,6 +3,7 @@
 const { merge } = require('webpack-merge');
 
 const common = require('./webpack.common.js');
+const ZipPlugin = require('zip-webpack-plugin');
 const PATHS = require('./paths');
 
 // Merge webpack configuration files
@@ -23,6 +24,12 @@ const config = merge(common, {
       },
     ],
   },
+  plugins:[
+    new ZipPlugin({
+      filename: 'Willhaben-ImmoMap.zip',
+      path: './', // Output directory where the zip file will be placed
+    }),
+  ]
 });
 
 module.exports = config;
