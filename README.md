@@ -2,6 +2,7 @@
 
 Diese Chrome-Erweiterung erweitert die Willhaben-Immobiliensuche mit der Möglichkeit, die Angebote auf einer Karte in einem extra Tab anzuzeigen. Wenn die Erweiterung eine Immobiliensuche auf der Seite `willhaben.at/iad/immobilien` erkennt, zeigt sie im Popup einen Button "Open Map" an.
 
+
 ## Installation
 
 Die Erweiterung muss manuell installiert werden:
