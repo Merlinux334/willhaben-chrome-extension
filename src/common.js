@@ -12,7 +12,6 @@ function extractJSONFromHTML(html) {
     }
   }
 
-  // Export the function for use in other scripts
   if (typeof module !== 'undefined') {
     module.exports = { extractJSONFromHTML };
   }

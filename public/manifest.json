@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Willhaben Map",
   "version": "0.1.0",
-  "description": "My Chrome Extension",
+  "description": "Willhaben Immo-Karte",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -13,7 +13,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Willhaben Map",
+    "default_title": "Willhaben Immo-Karte",
     "default_popup": "popup.html"
   },
   "permissions": ["activeTab", "tabs"],

@@ -1,4 +1,3 @@
-// Parse coordinates data from URL parameter
 const urlParams = new URLSearchParams(window.location.search);
 let data = JSON.parse(urlParams.get('data'));
 
@@ -21,5 +20,4 @@ data.forEach(datapoint => {
   </div>
 `,{ maxWidth : 300});
 
-  //marker.bindPopup(`<img src="${datapoint.imageUrl}" width="100" height="100"><br>${datapoint.description}<br><a href="${datapoint.detailUrl}" target="_blank">Detail</a>`);
 });
