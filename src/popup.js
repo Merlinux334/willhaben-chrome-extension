@@ -1,112 +1,53 @@
-'use strict';
 
-import './popup.css';
+function sendToScrapeData()
+{
+  console.log("Will query to send data");
+  chrome.runtime.sendMessage({ type: 'sendDataToBack' });
+  showProgress();
 
-(function() {
-  // We will make use of Storage API to get and store `count` value
-  // More information on Storage API can we found at
-  // https://developer.chrome.com/extensions/storage
+}
+function showProgress()
+{
+  document.getElementById('btncontainer').style.display = 'none';
+  document.querySelector('.progress-container').style.display = 'block';
+}
 
-  // To get storage access, we have to mention it in `permissions` property of manifest.json file
-  // More information on Permissions can we found at
-  // https://developer.chrome.com/extensions/declare_permissions
-  const counterStorage = {
-    get: cb => {
-      chrome.storage.sync.get(['count'], result => {
-        cb(result.count);
-      });
-    },
-    set: (value, cb) => {
-      chrome.storage.sync.set(
-        {
-          count: value,
-        },
-        () => {
-          cb();
-        }
-      );
-    },
-  };
+function hideProgress()
+{
+  document.getElementById('btncontainer').style.display = '';
+  document.querySelector('.progress-container').style.display = 'none';
+}
 
-  function setupCounter(initialValue = 0) {
-    document.getElementById('counter').innerHTML = initialValue;
+chrome.runtime.sendMessage({type: "checkJsonData"});
 
-    document.getElementById('incrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'INCREMENT',
-      });
-    });
-
-    document.getElementById('decrementBtn').addEventListener('click', () => {
-      updateCounter({
-        type: 'DECREMENT',
-      });
-    });
+// Listen for messages from content script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'mapData') {
+    hideProgress();
+    openMapInNewTab(message.data);
   }
+  if (message.type === 'createButton')
+  {
+    // Create button in the page.html to open map
+    const button = document.createElement('button');
+    button.textContent = 'Open Map';
+    button.className = 'button'; // Adding CSS class 'button'
+    button.addEventListener('click', sendToScrapeData);
 
-  function updateCounter({ type }) {
-    counterStorage.get(count => {
-      let newCount;
-
-      if (type === 'INCREMENT') {
-        newCount = count + 1;
-      } else if (type === 'DECREMENT') {
-        newCount = count - 1;
-      } else {
-        newCount = count;
-      }
-
-      counterStorage.set(newCount, () => {
-        document.getElementById('counter').innerHTML = newCount;
-
-        // Communicate with content script of
-        // active tab by sending a message
-        chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-          const tab = tabs[0];
-
-          chrome.tabs.sendMessage(
-            tab.id,
-            {
-              type: 'COUNT',
-              payload: {
-                count: newCount,
-              },
-            },
-            response => {
-              console.log('Current count value passed to contentScript file');
-            }
-          );
-        });
-      });
-    });
-  }
-
-  function restoreCounter() {
-    // Restore count value
-    counterStorage.get(count => {
-      if (typeof count === 'undefined') {
-        // Set counter value as 0
-        counterStorage.set(0, () => {
-          setupCounter(0);
-        });
-      } else {
-        setupCounter(count);
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', restoreCounter);
-
-  // Communicate with background file by sending a message
-  chrome.runtime.sendMessage(
-    {
-      type: 'GREETINGS',
-      payload: {
-        message: 'Hello, my name is Pop. I am from Popup.',
-      },
-    },
-    response => {
-      console.log(response.message);
+    // Append the button to the element with ID 'btncontainer'
+    const btnContainer = document.getElementById('btncontainer');
+    if (btnContainer) {
+      btnContainer.appendChild(button);
+    } else {
+      // If the element with ID 'btncontainer' does not exist, append the button to the document body
+      document.body.appendChild(button);
     }
-  );
-})();
+  }
+});
+
+// Function to open a new tab with the map
+function openMapInNewTab(coordinates) {
+  const mapData = encodeURIComponent(JSON.stringify(coordinates));
+  const url = chrome.runtime.getURL('map.html') + '?data=' + mapData;
+  chrome.tabs.create({ url: url });
+}

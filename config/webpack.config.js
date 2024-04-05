@@ -11,6 +11,17 @@ const config = merge(common, {
     popup: PATHS.src + '/popup.js',
     contentScript: PATHS.src + '/contentScript.js',
     background: PATHS.src + '/background.js',
+    leaflet: PATHS.src + '/leaflet.js',
+    loadMap: PATHS.src + '/loadMap.js',
+    common: PATHS.src + '/common.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: ['html-loader'],
+      },
+    ],
   },
 });
 

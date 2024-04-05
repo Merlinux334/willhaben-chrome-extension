@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map</title>
+  <style>
+    .tooltip-container {
+      display: flex;
+      align-items: center;
+      max-width: 100%; /* Ensure content stays within popup */
+    }
+
+    .tooltip-img {
+      width:150px;
+      margin-right: 10px;
+    }
+
+    .tooltip-content {
+      flex-grow: 1;
+    }
+
+    .tooltip-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .tooltip-price {
+      color: #007bff;
+      margin-bottom: 5px;
+    }
+
+    .tooltip-link {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+  <link rel="stylesheet" href="leaflet.css" />
+  <style>
+      body {
+          padding: 0;
+          margin: 0;
+      }
+      html, body, #map {
+          height: 100%;
+          width: 100%;
+      }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="leaflet.js"></script>
+  <script src="loadMap.js"></script>
+</body>
+</html>

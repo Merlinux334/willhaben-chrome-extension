@@ -1,5 +1,11 @@
 'use strict';
 
+// Import the function
+if (typeof require !== 'undefined') {
+  var { extractJSONFromHTML } = require('./common.js');
+}
+
+
 // Content script file will run in the context of web page.
 // With content script you can manipulate the web pages using
 // Document Object Model (DOM).
@@ -12,32 +18,40 @@
 // See https://developer.chrome.com/extensions/content_scripts
 
 // Log `title` of current active web page
+
+//check if we can find the json
+
+
+
 const pageTitle = document.head.getElementsByTagName('title')[0].innerHTML;
 console.log(
   `Page title is: '${pageTitle}' - evaluated by Chrome extension's 'contentScript.js' file`
 );
 
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  response => {
-    console.log(response.message);
+// Listen for messages from background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'popupOpened') {
+    checkJSON();
   }
-);
-
-// Listen for message
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
+  if (message.type === 'getJSONDataFromContent') {
+    console.log("Will check JSON after getting getJSONDataFromContent");
+    sendResponse(true);
+    checkJSON();
   }
-
-  // Send an empty response
-  // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
-  sendResponse({});
-  return true;
 });
+
+function checkJSON()
+{
+  
+  let html = document.documentElement.outerHTML;
+  let jsonData = extractJSONFromHTML(html);
+
+  console.log("checking JSON and sending in content script:",jsonData ? true : false)
+  chrome.runtime.sendMessage({
+    type: 'jsonDataFound',
+    found: jsonData ? true : false,
+    jsonData: jsonData,
+    url: window.location.href
+  });
+}
+checkJSON();

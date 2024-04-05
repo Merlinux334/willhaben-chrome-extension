@@ -90,3 +90,29 @@ code {
     border: .5px dashed #000;
     opacity: .1;
 }
+
+.progress-container {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f0f0;
+    display: none;
+  }
+  
+.progress-bar {
+width: 0%;
+height: 100%;
+background-color: #4caf50;
+animation: progress-animation 1s linear infinite;
+}
+
+@keyframes progress-animation {
+    0% {
+        width: 0%;
+    }
+    50% {
+        width: 50%;
+    }
+    100% {
+        width: 100%;
+    }
+}
