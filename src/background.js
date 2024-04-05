@@ -6,38 +6,18 @@ let url;
 let maxRowRequest = 200;
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'jsonDataFound') {
-    jsonDataFound = message.found;
-    if(jsonDataFound)
-    {
-      showNotification();
-      chrome.runtime.sendMessage({ type: 'createButton'});
-    }else{
-      clearNotification();
-    }
-  }
   if (message.type === 'checkJsonData') {
-    
-    console.log("got check data request");
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, 
           {
               type: "getJSONDataFromContent"
           }, (msg)=>{
-            console.log("got data Response");
             var lastError = chrome.runtime.lastError;
-            if (lastError) {
-                console.log("clearing since error");
+            if (lastError || !msg.found) {
                 clearNotification();
                 sendResponse(false);
-            }else{
-              if(msg.found){
+            }else if(msg.found){
                 sendResponse(true);
-              }else{
-                console.log("clearing since not found");
-                clearNotification();
-                sendResponse(false);
-              }
             }
           });
     })
@@ -155,14 +135,12 @@ function checkIfContentHasJSON()
         {
             type: "getJSONDataFromContent"
         }, (msg)=>{
-          console.log("Received tab update");
           var lastError = chrome.runtime.lastError;
           if (lastError) {
               clearNotification();
           }else{
               if(msg.found)
               {
-                console.log("Show notification due to tab update and found");
                 showNotification();
                 jsonData = msg.jsonData;
                 url = msg.url;

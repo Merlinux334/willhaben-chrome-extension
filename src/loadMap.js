@@ -1,5 +1,4 @@
 chrome.runtime.sendMessage({ type: 'newTabLoaded' },(resp)=>{
-  console.log("Map Data Received");
   loadMapData(resp);
 });
 
